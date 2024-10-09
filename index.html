@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.30.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.20.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0"></script>
+  </head>
+  <body>
+    <div style="text-align: center">
+      <h1>Australia climax station record over year analysis (2017-2023)</h1>
+      <div style="text-align: center">Created by Huynh Phuc Nguyen Nguyen</div>
+    </div>
+    <div style="width: 80%; margin-left: 10%; margin-right: 10%">
+      <div style="margin: auto; width: 100%; padding: auto; text-align: center">
+        <div style="text-align: left">
+          <h2>I. Analasys in station location</h2>
+        </div>
+        <div>
+          <h3>
+            Geographical Distribution of Data Recording Centers in Australia Map
+            (2019-2023)
+          </h3>
+          <div id="vis" style="width: 100%"></div>
+        </div>
+        <pre
+          id="fileContent"
+          style="width: 100%; white-space: pre-wrap; text-align: left"
+        ></pre>
+        <div style="text-align: left">
+          <h2>
+            II. Analasys in the average temperature and rainfails over year
+          </h2>
+        </div>
+        <div>
+          <h3>
+            Average temperature and rainfail over year in Australia (2017-2023)
+          </h3>
+          <div id="vis2" style="width: 100%"></div>
+        </div>
+        <pre
+          id="fileContent2"
+          style="width: 100%; white-space: pre-wrap; text-align: left"
+        ></pre>
+        <div style="text-align: left">
+          <h2>III. Recent temperature and rainfail recorded</h2>
+        </div>
+        <div>
+          <div style="display: flex; width: 100%">
+            <div style="width: 50%">
+              <div id="vis4" style="width: 100%"></div>
+            </div>
+            <div id="vis3" style="width: 50%"></div>
+          </div>
+        </div>
+        <pre
+          id="fileContent3"
+          style="width: 100%; white-space: pre-wrap; text-align: left"
+        ></pre>
+      </div>
+    </div>
+    <!-- 
+    <div
+      style="
+        margin: auto;
+        width: 100%;
+        padding: auto;
+        text-align: center;
+        padding-left: 10%;
+      "
+    >
+      <div style="display: flex">
+        <div>
+          <h2>
+            Geographical Distribution of Data Recording Centers in Australia °C
+            - (2019-2023)
+          </h2>
+          <div id="vis3"></div>
+        </div>
+        <div>
+          <h2>Temperature Trends in Australia °C - (2019-2023)</h2>
+          <div id="vis4"></div>
+        </div>
+      </div>
+    </div> -->
+
+    <script>
+      // Load the content for the staion description
+      fetch("./staionsDescription.txt") // Change to your text file name
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("fileContent").textContent = data;
+        })
+        .catch((error) => {
+          console.error("Error loading the file:", error);
+        });
+      // Load the content for the staion description
+      fetch("./staionsDescription.txt") // Change to your text file name
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("fileContent2").textContent = data;
+        })
+        .catch((error) => {
+          console.error("Error loading the file:", error);
+        });
+      fetch("./staionsDescription.txt") // Change to your text file name
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("fileContent3").textContent = data;
+        })
+        .catch((error) => {
+          console.error("Error loading the file:", error);
+        });
+
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        width: "container",
+        height: 500,
+        layer: [
+          {
+            data: {
+              url: "./data/auss.json",
+              format: {
+                type: "topojson",
+                feature: "austates",
+              },
+            },
+            transform: [
+              {
+                calculate:
+                  "'Data is not available in ' + datum.properties.NAME",
+                as: "note",
+              },
+            ],
+            mark: {
+              type: "geoshape",
+              fill: "#ddd",
+              stroke: "white",
+              strokeWidth: 1,
+            },
+            encoding: { tooltip: { field: "note" } },
+          },
+          {
+            data: {
+              url: "./data/stations.csv",
+            },
+            mark: "circle",
+            encoding: {
+              longitude: { field: "Longitude", type: "quantitative" },
+              latitude: { field: "Latitude", type: "quantitative" },
+              size: { value: 50 },
+
+              color: {
+                field: "height",
+                type: "quantitative",
+                title: "Height (m)",
+
+                scale: { scheme: "reds" },
+                legend: { format: ".2s" },
+              },
+              tooltip: [
+                { field: "name", type: "nominal", title: "Station name" },
+                {
+                  field: "height",
+                  type: "quantitative",
+                  title: "Station Height (m)",
+                  format: ",",
+                },
+                {
+                  field: "Longitude",
+                  type: "quantitative",
+                  title: "Longitude",
+                },
+                { field: "Latitude", type: "quantitative", title: "Latitude" },
+                { field: "Latitude", type: "quantitative", title: "Latitude" },
+              ],
+            },
+          },
+        ],
+        config: {},
+      };
+
+      vegaEmbed("#vis", spec, { mode: "vega-lite" })
+        .then(console.log)
+        .catch(console.warn);
+      const spec2 = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        params: [
+          {
+            name: "year_selected",
+            value: 2019,
+            bind: {
+              input: "range",
+              min: 2017,
+              max: 2023,
+              step: 1,
+              name: "Year:  ",
+            },
+          },
+        ],
+        description:
+          'A dual axis chart, created by setting y\'s scale resolution to `"independent"`',
+        width: "container", // Specify width
+        height: 500, // Specify height
+        data: {
+          url: "./data/data.csv",
+        },
+        transform: [{ filter: "datum.year == year_selected" }],
+        encoding: {
+          x: { field: "month", timeUnit: "month" }, // Use temporal for date
+        },
+        layer: [
+          {
+            mark: { stroke: "#85C5A6", type: "line", interpolate: "monotone" },
+            encoding: {
+              y: {
+                aggregate: "mean",
+                field: "temperature",
+                type: "quantitative",
+                title: "Avg. Temperature (°C)",
+                axis: { titleColor: "#85C5A6" },
+              },
+              tooltip: [
+                { field: "month", timeUnit: "month", title: "Month" },
+
+                {
+                  field: "temperature",
+                  aggregate: "mean",
+                  type: "quantitative",
+                  title: "Median Temperature",
+                  format: ",",
+                },
+              ],
+            },
+          },
+          {
+            mark: { stroke: "#85A9C5", type: "line", interpolate: "monotone" },
+            encoding: {
+              y: {
+                aggregate: "mean",
+                field: "rainfall",
+                type: "quantitative",
+                title: "Rainfail ammount (mm)",
+                axis: { titleColor: "#85A9C5" },
+              },
+              tooltip: [
+                { field: "month", timeUnit: "month", title: "Month" },
+
+                {
+                  field: "rainfall",
+                  aggregate: "mean",
+                  type: "quantitative",
+                  title: "Median Rainfail",
+                  format: ",",
+                },
+              ],
+            },
+          },
+        ],
+        resolve: { scale: { y: "independent" } },
+      };
+
+      vegaEmbed("#vis2", spec2, { mode: "vega-lite" })
+        .then(console.log)
+        .catch(console.warn);
+      const spec3 = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        title: "Total Rainfail ammount overmonth in 2023 in Australia (mm)",
+        description:
+          "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
+        data: {
+          url: "./data/data.csv",
+        },
+        width: 800, // Specify width
+        height: 500, // Specify height
+        mark: "bar",
+        encoding: {
+          x: { field: "month", timeUnit: "month" },
+          y: {
+            aggregate: "mean",
+            field: "rainfall",
+            type: "quantitative",
+            title: "Total Rainfail ammount (mm)",
+          },
+        },
+      };
+
+      vegaEmbed("#vis3", spec3, { mode: "vega-lite" })
+        .then(console.log)
+        .catch(console.warn);
+      const spec4 = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        title: "Average temperature record in 2023 in Australia (°C)",
+
+        description:
+          "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
+        data: {
+          url: "./data/data.csv",
+        },
+        width: "container", // Specify width
+        height: 500, // Specify height
+        mark: "rect",
+        transform: [{ filter: "datum.year == 2023" }],
+
+        encoding: {
+          x: { field: "month", timeUnit: "month", title: "Month" },
+          y: { field: "day", timeUnit: "day", title: "Day" },
+          color: {
+            field: "temperature",
+            type: "quantitative",
+            title: "Temperature (°C)",
+          },
+          tooltip: [
+            { field: "month", timeUnit: "month", title: "Month" },
+            { field: "day", timeUnit: "day", title: "Day" },
+            {
+              field: "temperature",
+              type: "quantitative",
+              title: "Temperature (°C)",
+              format: ",",
+            },
+          ],
+        },
+      };
+
+      vegaEmbed("#vis4", spec4, { mode: "vega-lite" })
+        .then(console.log)
+        .catch(console.warn);
+    </script>
+  </body>
+</html>
