@@ -81,6 +81,7 @@ li {
 .flex-item {
   width: 48%;
   border-radius: 10px;
+  font-size: large;
 }
 
 pre {
@@ -91,4 +92,5 @@ pre {
   white-space: pre-wrap;
   font-family: "Courier New", Courier, monospace; /* This changes the font */
   color: #000000; /* This makes the text black */
+  font-size: smaller;
 }
