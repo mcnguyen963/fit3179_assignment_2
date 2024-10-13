@@ -10,6 +10,9 @@ h1,
 h2,
 h3 {
   color: #2c3e50;
+  font-family: "Times New Roman", Times, serif; /* New font for titles */
+  font-weight: bold; /* Added font weight */
+  font-style: italic; /* Added font style */
 }
 
 p {
@@ -67,12 +70,15 @@ li {
 
 .flex-item {
   width: 48%;
+  border-radius: 10px;
 }
 
 pre {
-  background-color: #e8e8e8;
+  background-color: #ededed;
   padding: 10px;
   border-radius: 10px;
   overflow-x: auto;
-  white-space: pre-wrap; /* This ensures the text wraps to a new line */
+  white-space: pre-wrap;
+  font-family: "Courier New", Courier, monospace; /* This changes the font */
+  color: #000000; /* This makes the text black */
 }

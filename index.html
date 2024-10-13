@@ -51,30 +51,6 @@
       © 2024 Huynh Phuc Nguyen Nguyen. All rights reserved. Data sourced from
       Bureau of Meteorology.
     </div>
-    <!-- 
-    <div
-      style="
-        margin: auto;
-        width: 100%;
-        padding: auto;
-        text-align: center;
-        padding-left: 10%;
-      "
-    >
-      <div style="display: flex">
-        <div>
-          <h2>
-            Geographical Distribution of Data Recording Centers in Australia °C
-            - (2019-2023)
-          </h2>
-          <div id="vis3"></div>
-        </div>
-        <div>
-          <h2>Temperature Trends in Australia °C - (2019-2023)</h2>
-          <div id="vis4"></div>
-        </div>
-      </div>
-    </div> -->
 
     <script>
       // Load the content for the staion description
@@ -87,7 +63,7 @@
           console.error("Error loading the file:", error);
         });
       // Load the content for the staion description
-      fetch("./staionsDescription.txt") // Change to your text file name
+      fetch("./staionsDescription2.txt") // Change to your text file name
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("fileContent2").textContent = data;
@@ -95,7 +71,7 @@
         .catch((error) => {
           console.error("Error loading the file:", error);
         });
-      fetch("./staionsDescription.txt") // Change to your text file name
+      fetch("./staionsDescription3.txt") // Change to your text file name
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("fileContent3").textContent = data;
