@@ -119,12 +119,10 @@
               longitude: { field: "Longitude", type: "quantitative" },
               latitude: { field: "Latitude", type: "quantitative" },
               size: { value: 50 },
-
               color: {
                 field: "height",
                 type: "quantitative",
                 title: "Height from sea level (m)",
-
                 scale: { scheme: "reds" },
                 legend: { format: ".2s" },
               },
@@ -144,6 +142,29 @@
                 { field: "Latitude", type: "quantitative", title: "Latitude" },
                 { field: "Latitude", type: "quantitative", title: "Latitude" },
               ],
+            },
+          },
+          {
+            // Annotation layer
+            data: {
+              values: [
+                {
+                  longitude: 165,
+                  latitude: -40,
+                  text: " The medium height for all of stations in Australia is 227m",
+                },
+              ],
+            },
+            mark: {
+              type: "text",
+              fontSize: 14,
+              fontWeight: "bold",
+              dy: -10, // Adjust the position of the text
+            },
+            encoding: {
+              longitude: { field: "longitude", type: "quantitative" },
+              latitude: { field: "latitude", type: "quantitative" },
+              text: { field: "text" },
             },
           },
         ],
@@ -324,7 +345,7 @@
 
         layer: [
           {
-            mark: { type: "arc", innerRadius: 20, stroke: "#fff" },
+            mark: { type: "arc", innerRadius: 50, stroke: "#fff" },
           },
           {
             mark: { type: "text", radiusOffset: 20 },
