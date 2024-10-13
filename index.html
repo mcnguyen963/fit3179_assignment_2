@@ -287,15 +287,27 @@
         .catch(console.warn);
       const spec4 = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-        title: "Average temperature record in 2023 in Australia (°C)",
-
+        title: "Average temperature record in 2017-2023 in Australia (°C)",
+        params: [
+          {
+            name: "year_selected",
+            value: 2019,
+            bind: {
+              input: "range",
+              min: 2017,
+              max: 2023,
+              step: 1,
+              name: "Year:  ",
+            },
+          },
+        ],
         data: {
           url: "./data/data.csv",
         },
         width: "container", // Specify width
         height: 468, // Specify height
         mark: "rect",
-        transform: [{ filter: "datum.year == 2023" }],
+        transform: [{ filter: "datum.year == year_selected" }],
 
         encoding: {
           x: { field: "month", timeUnit: "month", title: "Month" },
@@ -328,15 +340,27 @@
 
       const spec5 = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-        title: "Total rainfail per month in Australia 2023 (mm)",
-
+        title: "Total rainfail per month in Australia 2017-2023 (mm)",
+        params: [
+          {
+            name: "year_selected",
+            value: 2019,
+            bind: {
+              input: "range",
+              min: 2017,
+              max: 2023,
+              step: 1,
+              name: "Year:  ",
+            },
+          },
+        ],
         data: {
           url: "./data/data.csv",
         },
         width: "container", // Specify width
         height: 500, // Specify height
         mark: "rect",
-        transform: [{ filter: "datum.year == 2023" }],
+        transform: [{ filter: "datum.year == year_selected" }],
 
         layer: [
           {
